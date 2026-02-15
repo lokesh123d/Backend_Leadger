@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const emailService = require('../services/email.service.js');
 
 
 /** 
@@ -28,6 +29,7 @@ const userRegisterController = async (req, res) => {
         },
         token
     })
+    await emailService.sendRegistrationEmail(email, userName);
 }
 
 
@@ -53,7 +55,8 @@ const userLoginController = async (req, res) => {
 
     res.cookie('token', token);
 
-    return res.status(200).json({
+    
+    res.status(200).json({
         message: 'User Login Successfully', user: {
             _id: user._id,
             email: user.email,
@@ -61,12 +64,10 @@ const userLoginController = async (req, res) => {
         },
         token
     });
-
-
-
+    
+    await emailService.sendLoginNotificationEmail(email, user.userName);
 
 }
-
 
 
 

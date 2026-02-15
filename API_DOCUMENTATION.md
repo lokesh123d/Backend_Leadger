@@ -1,4 +1,4 @@
-# API Documentation for Frontend Developers
+# API Documentation 
 
 ## Base URL
 ```
